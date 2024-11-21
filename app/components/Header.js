@@ -1,7 +1,9 @@
 "use client";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import appLogo from "./logo.jpg";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -9,52 +11,57 @@ export default function Header() {
 
   const isActive = (path) => pathname === path;
 
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/events", label: "Events" },
+    { href: "/contact", label: "Contact" },
+    { href: "/gallery", label: "Gallery" },
+  ];
+
   return (
-    <header className="bg-white shadow">
-      <nav className="container mx-auto px-4">
-        <div className="flex justify-between h-16 items-center">
-          <Link href="/" className="font-bold text-xl">
-            Logo
+    <header className="bg-black text-white sticky top-0 z-50 shadow-2xl">
+      <nav className="container mx-auto px-4 py-3">
+        <div className="flex justify-between items-center">
+          {/* Logo with Next.js Image component */}
+          <Link href="/" className="flex items-center space-x-3">
+            <Image
+              src={appLogo}
+              alt="Vicious Warfare Logo"
+              width={50}
+              height={50}
+              className="rounded-full border-2 border-red-700"
+            />
+            <span className="font-bold text-xl tracking-wider uppercase hidden sm:block">
+              Vicious Warfare
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
-            <Link
-              href="/"
-              className={`${isActive("/") ? "text-blue-600" : "text-gray-600"} hover:text-blue-500`}
-            >
-              Home
-            </Link>
-            <Link
-              href="/events"
-              className={`${
-                isActive("/events") ? "text-blue-600" : "text-gray-600"
-              } hover:text-blue-500`}
-            >
-              Events
-            </Link>
-            <Link
-              href="/contact"
-              className={`${
-                isActive("/contact") ? "text-blue-600" : "text-gray-600"
-              } hover:text-blue-500`}
-            >
-              Contact
-            </Link>
-            <Link
-              href="/gallery"
-              className={`${
-                isActive("/gallery") ? "text-blue-600" : "text-gray-600"
-              } hover:text-blue-500`}
-            >
-              Gallery
-            </Link>
+          <div className="hidden md:flex space-x-6">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`
+                  uppercase tracking-wider text-sm
+                  transition-all duration-300 ease-in-out
+                  hover:text-red-600
+                  ${isActive(link.href) ? "text-red-600 font-bold" : "text-gray-300"}
+                `}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
           {/* Mobile menu button */}
-          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button
+            className="md:hidden p-2 rounded-md hover:bg-gray-800 transition"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle mobile menu"
+          >
             <svg
-              className="w-6 h-6"
+              className="w-6 h-6 text-white"
               fill="none"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -69,35 +76,27 @@ export default function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden pb-4">
-            <Link
-              href="/"
-              className={`block py-2 ${isActive("/") ? "text-blue-600" : "text-gray-600"}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link
-              href="/events"
-              className={`block py-2 ${isActive("/events") ? "text-blue-600" : "text-gray-600"}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Events
-            </Link>
-            <Link
-              href="/contact"
-              className={`block py-2 ${isActive("/contact") ? "text-blue-600" : "text-gray-600"}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Contact
-            </Link>
-            <Link
-              href="/gallery"
-              className={`block py-2 ${isActive("/gallery") ? "text-blue-600" : "text-gray-600"}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Gallery
-            </Link>
+          <div className="md:hidden bg-black shadow-lg">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`
+                  block px-4 py-3 
+                  border-b border-gray-800 
+                  uppercase tracking-wider
+                  transition-colors duration-300
+                  ${
+                    isActive(link.href)
+                      ? "text-red-600 bg-gray-900"
+                      : "text-gray-300 hover:bg-gray-900"
+                  }
+                `}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
         )}
       </nav>
