@@ -30,10 +30,10 @@ export default function HomePage() {
                 Upcoming Shows
               </a>
               <a
-                href="/gallery"
+                href="/contact"
                 className="border border-black text-black px-6 py-2 rounded-md hover:bg-gray-100 transition-colors"
               >
-                Band Gallery
+                Contact Us
               </a>
             </div>
           </div>
